@@ -6,7 +6,9 @@ import {
   XCircle,
   Play,
   X,
-  Save
+  Save,
+  Search,
+  Filter
 } from 'lucide-react';
 import '../index.css';
 
@@ -14,6 +16,8 @@ const Products = () => {
   const [activeTab, setActiveTab] = useState('spectacles'); // 'spectacles' or 'lenses'
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('newest'); // 'newest' or 'asc'
 
   // Dynamic Form State
   const [formData, setFormData] = useState({});
@@ -95,32 +99,75 @@ const Products = () => {
     setIsModalOpen(false);
   };
 
+  // Filter Logic
+  const getFilteredData = (data) => {
+    return data
+      .filter(item =>
+        item.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.id.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return a.brand.localeCompare(b.brand);
+        }
+        return b.id.localeCompare(a.id); // 'newest' proxy via ID
+      });
+  };
+
+  const displayedData = activeTab === 'spectacles'
+    ? getFilteredData(spectacles)
+    : getFilteredData(lenses);
+
   return (
     <div className="product-page-container">
       {/* Header Actions */}
       <div className="page-header">
-        {/* Toggle Button / Switcher */}
-        <div
-          className="view-toggle-btn"
-          onClick={handleToggle}
-          role="button"
-          tabIndex={0}
-        >
-          <div className="toggle-icon-wrap">
-            <Play size={16} fill="black" style={{ transform: 'rotate(0deg)' }} />
+        <div className="left-group">
+          {/* Toggle Button / Switcher */}
+          <div
+            className="view-toggle-btn"
+            onClick={handleToggle}
+            role="button"
+            tabIndex={0}
+          >
+            <div className="toggle-icon-wrap">
+              <Play size={16} fill="black" style={{ transform: 'rotate(0deg)' }} />
+            </div>
+            <span className="toggle-label">
+              {activeTab === 'spectacles' ? 'Spectacles' : 'Lenses'}
+            </span>
           </div>
-          <span className="toggle-label">
-            {activeTab === 'spectacles' ? 'Spectacles' : 'Lenses'}
-          </span>
         </div>
 
-        {/* Create Product Button */}
-        <button className="create-product-btn" onClick={() => openModal()}>
-          <div className="create-icon-wrap">
-            <Plus size={20} />
+        <div className="right-group">
+          {/* Filter Button */}
+          <button
+            className={`filter-btn ${sortOrder === 'asc' ? 'active' : ''}`}
+            onClick={() => setSortOrder(prev => prev === 'asc' ? 'newest' : 'asc')}
+          >
+            <Filter size={18} />
+            <span>Filter: {sortOrder === 'asc' ? 'Brand A-Z' : 'Newest'}</span>
+          </button>
+
+          {/* Search Bar */}
+          <div className="search-bar">
+            <Search size={18} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-          <span>Create Product</span>
-        </button>
+
+          {/* Create Product Button */}
+          <button className="create-product-btn" onClick={() => openModal()}>
+            <div className="create-icon-wrap">
+              <Plus size={20} />
+            </div>
+            <span>Create Product</span>
+          </button>
+        </div>
       </div>
 
       {/* Product Table Card */}
@@ -152,7 +199,7 @@ const Products = () => {
           </thead>
           <tbody>
             {activeTab === 'spectacles' ? (
-              spectacles.map((item, index) => (
+              displayedData.map((item, index) => (
                 <tr key={index}>
                   <td className="text-muted">{item.id}</td>
                   <td className="font-medium">{item.brand}</td>
@@ -162,7 +209,6 @@ const Products = () => {
                   <td>{item.qty}</td>
                   <td>
                     <div className="action-row">
-                      {/* Removed Eye Icon per request */}
                       <button className="action-btn edit" onClick={() => openModal(item)}>
                         <Edit size={18} />
                       </button>
@@ -174,7 +220,7 @@ const Products = () => {
                 </tr>
               ))
             ) : (
-              lenses.map((item, index) => (
+              displayedData.map((item, index) => (
                 <tr key={index}>
                   <td className="text-muted">{item.id}</td>
                   <td className="font-medium">{item.brand}</td>
@@ -315,6 +361,12 @@ const styles = `
   margin-bottom: 8px;
 }
 
+.right-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .view-toggle-btn {
   background: var(--bg-card);
   padding: 12px 24px;
@@ -370,6 +422,53 @@ const styles = `
   border: 2px solid var(--text-main);
   border-radius: 50%;
   padding: 2px;
+}
+
+/* Filter & Search Styles */
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn.active {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--secondary);
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    padding: 0 16px;
+    border-radius: 8px;
+    height: 48px; /* Match button height roughly */
+    width: 220px;
+    box-shadow: var(--shadow-sm);
+}
+
+.search-icon {
+    color: var(--text-muted);
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+    color: var(--text-main);
+    box-shadow: none;
 }
 
 .product-card {
