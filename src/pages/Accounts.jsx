@@ -11,6 +11,7 @@ import {
     CheckCircle,
     MoreHorizontal
 } from 'lucide-react';
+import Breadcrumb from '../components/Breadcrumb';
 import '../index.css';
 
 const Accounts = () => {
@@ -146,11 +147,17 @@ const Accounts = () => {
             return b.id.localeCompare(a.id);
         });
 
+
+
     return (
         <div className="accounts-container">
+            {/* Breadcrumb */}
+            <Breadcrumb currentPage="Accounts" />
+
             {/* Header Actions */}
             <div className="page-header-actions">
                 <div className="left-controls">
+                    {/* ... (keep filter and search) */}
                     <button
                         className={`filter-btn ${sortOrder === 'asc' ? 'active' : ''}`}
                         onClick={() => setSortOrder(prev => prev === 'asc' ? 'newest' : 'asc')}
@@ -170,11 +177,10 @@ const Accounts = () => {
                     </div>
                 </div>
 
-                <button className="create-staff-btn" onClick={() => openModal()}>
-                    <div className="btn-icon-circle">
-                        <Plus size={20} />
-                    </div>
-                    <span>Create New Staff</span>
+                {/* Standardized Create Button */}
+                <button className="btn-primary-standard" onClick={() => openModal()}>
+                    <Plus size={18} />
+                    <span>Add User</span>
                 </button>
             </div>
 
@@ -362,33 +368,25 @@ const styles = `
     box-shadow: none; /* Override default input shadow */
 }
 
-.create-staff-btn {
-    background: var(--bg-card);
-    padding: 8px 20px 8px 12px;
-    border-radius: 50px;
+/* Standard Button */
+.btn-primary-standard {
+    background: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 12px;
-    box-shadow: var(--shadow-sm);
-    color: var(--text-main);
-    font-weight: 700;
-    font-size: 1.1rem;
-    height: 60px;
+    gap: 8px;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.2);
+    transition: all 0.2s;
+    font-size: 0.95rem;
 }
 
-.create-staff-btn:hover {
+.btn-primary-standard:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-icon-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--text-main);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    box-shadow: 0 6px 8px -1px rgba(168, 85, 247, 0.3);
 }
 
 .table-card {

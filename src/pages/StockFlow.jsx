@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ArrowRightLeft, CheckCircle, AlertCircle } from 'lucide-react';
 import '../index.css';
 
+import Breadcrumb from '../components/Breadcrumb';
+
 const StockFlow = () => {
     const [formData, setFormData] = useState({
         productId: '',
@@ -62,6 +64,7 @@ const StockFlow = () => {
 
     return (
         <div className="stock-flow-container">
+            <Breadcrumb currentPage="Stock Flow" />
             <h1 className="page-title">Stock Flow</h1>
 
             <div className="stock-flow-card card">

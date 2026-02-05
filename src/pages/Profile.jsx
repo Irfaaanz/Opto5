@@ -3,6 +3,8 @@ import { Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../index.css';
 
+import Breadcrumb from '../components/Breadcrumb';
+
 const Profile = () => {
   const [firstName, setFirstName] = useState('Jhonathon');
   const [lastName, setLastName] = useState('Ronan');
@@ -60,8 +62,9 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+      <Breadcrumb currentPage="My Profile" />
       {/* Header */}
-      <div className="profile-header flex-between">
+      <div className="profile-header-card flex-between">
         <h1 className="page-title">My Profile</h1>
         <div className="crumbs text-muted">
           <Link to="/dashboard" className="crumb-link">Dashboard</Link> / My Profile

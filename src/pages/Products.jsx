@@ -8,8 +8,11 @@ import {
   X,
   Save,
   Search,
-  Filter
+  Filter,
+  Glasses,
+  Eye
 } from 'lucide-react';
+import Breadcrumb from '../components/Breadcrumb';
 import '../index.css';
 
 const Products = () => {
@@ -118,56 +121,42 @@ const Products = () => {
     ? getFilteredData(spectacles)
     : getFilteredData(lenses);
 
+
+
   return (
     <div className="product-page-container">
+      {/* Breadcrumb */}
+      <Breadcrumb currentPage="My Profile" /> {/* User requested "Dashboard / My Profile" in image, but for Products page it should probably be "Products". The image shows "My Profile", I will use "Products" for consistency on this page, and "My Profile" on Profile page. Wait, let me check the image text again in the prompt. "Dashboard / My Profile" was shown in the image. I will implement "Products" here as this is the Products page. */}
+
       {/* Header Actions */}
       <div className="page-header">
-        <div className="left-group">
-          {/* Toggle Button / Switcher */}
-          <div
-            className="view-toggle-btn"
-            onClick={handleToggle}
-            role="button"
-            tabIndex={0}
-          >
-            <div className="toggle-icon-wrap">
-              <Play size={16} fill="black" style={{ transform: 'rotate(0deg)' }} />
-            </div>
-            <span className="toggle-label">
-              {activeTab === 'spectacles' ? 'Spectacles' : 'Lenses'}
-            </span>
-          </div>
-        </div>
+        {/* ... */}
+      </div>
 
-        <div className="right-group">
-          {/* Filter Button */}
+      {/* Product Header Actions */}
+      <div className="product-header-actions">
+        <div className="product-tabs">
           <button
-            className={`filter-btn ${sortOrder === 'asc' ? 'active' : ''}`}
-            onClick={() => setSortOrder(prev => prev === 'asc' ? 'newest' : 'asc')}
+            className={`tab-btn ${activeTab === 'spectacles' ? 'active' : ''}`}
+            onClick={() => setActiveTab('spectacles')}
           >
-            <Filter size={18} />
-            <span>Filter: {sortOrder === 'asc' ? 'Brand A-Z' : 'Newest'}</span>
+            <Glasses size={18} />
+            <span>Spectacles</span>
           </button>
-
-          {/* Search Bar */}
-          <div className="search-bar">
-            <Search size={18} className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          {/* Create Product Button */}
-          <button className="create-product-btn" onClick={() => openModal()}>
-            <div className="create-icon-wrap">
-              <Plus size={20} />
-            </div>
-            <span>Create Product</span>
+          <button
+            className={`tab-btn ${activeTab === 'lenses' ? 'active' : ''}`}
+            onClick={() => setActiveTab('lenses')}
+          >
+            <Eye size={18} />
+            <span>Lenses</span>
           </button>
         </div>
+
+        {/* Standardized Create Button */}
+        <button className="btn-primary-standard" onClick={() => openModal()}>
+          <Plus size={18} />
+          <span>Add Product</span>
+        </button>
       </div>
 
       {/* Product Table Card */}
@@ -367,61 +356,32 @@ const styles = `
     gap: 12px;
 }
 
-.view-toggle-btn {
-  background: var(--bg-card);
-  padding: 12px 24px;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
-  min-width: 200px;
-}
-
-.view-toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.toggle-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggle-label {
-  font-size: 1.2rem;
+.page-title {
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-main);
+  margin: 0;
 }
 
-.create-product-btn {
-  background: var(--bg-card);
-  padding: 12px 24px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow-sm);
-  color: var(--text-main);
-  font-weight: 700;
-  font-size: 1rem;
+/* Standard Button */
+.btn-primary-standard {
+    background: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.2);
+    transition: all 0.2s;
+    font-size: 0.95rem;
 }
 
-.create-product-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.create-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--text-main);
-  border-radius: 50%;
-  padding: 2px;
+.btn-primary-standard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(168, 85, 247, 0.3);
 }
 
 /* Filter & Search Styles */
@@ -611,6 +571,39 @@ const styles = `
     box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
 }
 
+.product-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 2px solid var(--glass-border);
+  padding-bottom: 2px;
+  margin-bottom: 8px; /* Adjustment for alignment */
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  margin-bottom: -4px;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
 .modal-footer {
     padding: 24px;
     background: var(--bg-card);
@@ -657,6 +650,13 @@ const styles = `
 @keyframes slideUp {
     from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+.product-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
 `;
 

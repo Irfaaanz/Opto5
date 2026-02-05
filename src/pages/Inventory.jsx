@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Search, Filter, Eye } from 'lucide-react';
 import '../index.css';
 
+import Breadcrumb from '../components/Breadcrumb';
+
 const Inventory = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterType, setFilterType] = useState('All'); // All, Frame, Lens, Contact
@@ -47,6 +49,7 @@ const Inventory = () => {
 
     return (
         <div className="inventory-container">
+            <Breadcrumb currentPage="Inventory" />
             <h1 className="page-title">Inventory</h1>
 
             {/* Controls */}

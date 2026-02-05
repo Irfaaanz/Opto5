@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import {
   LayoutDashboard,
   List,
@@ -9,7 +10,6 @@ import {
   FileText,
   Users,
   History,
-  Eye,
   ArrowRightLeft
 } from 'lucide-react';
 import '../index.css';
@@ -22,18 +22,20 @@ const Sidebar = () => {
     { icon: ArrowRightLeft, label: 'Stock Flow', path: '/stock-flow' },
     { icon: Bell, label: 'Alerts', path: '/alerts' },
     { icon: BarChart2, label: 'Reports', path: '/reports' },
+    { icon: History, label: 'History', path: '/history' },
     { icon: Users, label: 'Accounts', path: '/accounts' },
-    { icon: History, label: 'Activity Log', path: '/activity' },
   ];
 
   return (
     <div className="sidebar">
-      <div className="sidebar-brand">
-        <div className="logo-icon">
-          <Eye size={28} color="#3b82f6" />
+      <Link to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="sidebar-brand" style={{ cursor: 'pointer' }}>
+          <div className="logo-icon">
+            <img src={logo} alt="OptoFive" style={{ height: '32px', width: 'auto' }} />
+          </div>
+          <span className="brand-name">OptoFive</span>
         </div>
-        <span className="brand-name">OptoFive</span>
-      </div>
+      </Link>
 
       <nav className="sidebar-nav">
         {menuItems.map((item, index) => (
