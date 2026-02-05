@@ -8,6 +8,9 @@ import Profile from './pages/Profile';
 import Accounts from './pages/Accounts';
 import Inventory from './pages/Inventory';
 import StockFlow from './pages/StockFlow';
+import Alerts from './pages/Alerts';
+import Reports from './pages/Reports';
+import History from './pages/History';
 
 // Dashboard component is imported above
 
@@ -25,6 +28,9 @@ function App() {
                     <Route path="/accounts" element={<Accounts />} />
                     <Route path="/inventory" element={<Inventory />} />
                     <Route path="/stock-flow" element={<StockFlow />} />
+                    <Route path="/alerts" element={<Alerts />} />
+                    <Route path="/reports" element={<Reports />} />
+                    <Route path="/history" element={<History />} />
                 </Route>
             </Routes>
         </Router>

@@ -12,17 +12,35 @@ import {
     Cell,
     Legend
 } from 'recharts';
-import { List, ClipboardList, CheckSquare } from 'lucide-react';
+import { Package, AlertTriangle, Clock, DollarSign, AlertCircle, TrendingUp } from 'lucide-react';
 import '../index.css';
 
 const Dashboard = () => {
-    // Mock Data
-    const monthlySalesData = [
-        { name: '30% Rounded Spectacles', value: 45, color: '#4ade80' }, // Green
-        { name: '40% Lenses', value: 60, color: '#fbbf24' },        // Yellow
-        { name: '30% Luxury Spectacles', value: 45, color: '#3b82f6' }, // Blue
+    // Mock Data - Summary Cards
+    const summaryData = [
+        { title: 'Total Products', value: '1,034', icon: Package, color: '#3b82f6' },
+        { title: 'Low Stock', value: '12', icon: AlertTriangle, color: '#ef4444' }, // Red for alert
+        { title: 'Expiring Soon', value: '5', icon: Clock, color: '#f59e0b' }, // Orange for warning
+        { title: "Today's Sales", value: 'RM 2,450', icon: DollarSign, color: '#10b981' }, // Green for money
     ];
 
+    // Mock Data - Priority Alerts
+    const lowStockItems = [
+        { name: 'Ray-Ban RB123', qty: 4 },
+        { name: 'Vogue VG223', qty: 3 },
+        { name: 'Acuvue Oasys', qty: 2 },
+    ];
+
+    const expiringItems = [
+        { name: 'SoftLens Daily', date: '12 Feb' },
+        { name: 'Biofinity Monthly', date: '15 Feb' },
+    ];
+
+    // Mock Data - Sales Insights
+    const topProduct = { name: 'Ray-Ban RB5154', sold: '28 units' };
+    const slowProduct = { name: 'Vogue VG992', sold: '2 units' };
+
+    // Mock Data - Stock Flow Chart
     const stockFlowData = [
         { name: 'Mon', sales: 40, purchase: 60 },
         { name: 'Tue', sales: 50, purchase: 70 },
@@ -33,177 +51,103 @@ const Dashboard = () => {
         { name: 'Sun', sales: 100, purchase: 110 },
     ];
 
-    const stockAlerts = [
-        { code: '87305928', product: 'Smartphone', warehouse: 'Warehouse 02', quantity: '05', alert: '10' },
-        { code: '87309912', product: 'Mask', warehouse: 'Warehouse 02', quantity: '10', alert: '05' },
-        { code: '87305452', product: 'Laptop', warehouse: 'Warehouse 01', quantity: '100', alert: '05' },
-        { code: '87305231', product: 'Earphone', warehouse: 'Warehouse 03', quantity: '10', alert: '50' },
-        { code: '87305452', product: 'Laptop', warehouse: 'Warehouse 01', quantity: '100', alert: '05' },
-    ];
-
-    const recentSales = [
-        { ref: '87305928', customer: 'Jhon Doe', status: 'Completed', total: '$1200.00', paid: '$1200.00', due: '$00.00', pStatus: 'Paid' },
-        { ref: '87305929', customer: 'Angela Carter', status: 'Incomplete', total: '$1450.00', paid: '$1000.00', due: '$450.00', pStatus: 'Due' },
-        { ref: '87305927', customer: 'Victor James', status: 'Completed', total: '$1200.00', paid: '$1200.00', due: '$00.00', pStatus: 'Paid' },
-    ];
-
     return (
         <div className="dashboard-container">
-            {/* Stats Cards Row */}
-            <div className="stats-grid">
-                <div className="stat-card">
-                    <div className="stat-icon-wrapper">
-                        <List size={32} color="#3b82f6" />
+            {/* 1. Top Summary Cards (4 Columns) */}
+            <div className="stats-grid-4">
+                {summaryData.map((item, index) => (
+                    <div className="stat-card" key={index}>
+                        <div className="stat-icon-wrapper" style={{ backgroundColor: `${item.color}15` }}>
+                            <item.icon size={28} color={item.color} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-label">{item.title}</span>
+                            <span className="stat-value">{item.value}</span>
+                        </div>
                     </div>
-                    <div className="stat-content">
-                        <span className="stat-label">Product</span>
-                        <span className="stat-value">1,034</span>
-                    </div>
-                </div>
-
-                <div className="stat-card">
-                    <div className="stat-icon-wrapper">
-                        <ClipboardList size={32} color="#1e293b" />
-                    </div>
-                    <div className="stat-content">
-                        <span className="stat-label">Inventories</span>
-                        <span className="stat-value">2,048</span>
-                    </div>
-                </div>
-
-                <div className="stat-card">
-                    <div className="stat-icon-wrapper">
-                        <CheckSquare size={32} color="#3b82f6" />
-                    </div>
-                    <div className="stat-content">
-                        <span className="stat-label">Sales</span>
-                        <span className="stat-value">RM 10,324</span>
-                    </div>
-                </div>
+                ))}
             </div>
 
-            {/* Main Grid: Stock Alert (Left) + Charts (Right) */}
-            <div className="dashboard-content-grid">
-                {/* Left Column: Stock Alert */}
-                <div className="card stock-alert-card">
-                    <h3 className="card-title">Stock Alert</h3>
-                    <table className="custom-table">
-                        <thead>
-                            <tr>
-                                <th>CODE</th>
-                                <th>PRODUCT</th>
-                                <th>WAREHOUSE</th>
-                                <th>QUANTITY</th>
-                                <th>ALERT QUANTITY</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {stockAlerts.map((item, index) => (
-                                <tr key={index}>
-                                    <td className="text-muted">{item.code}</td>
-                                    <td>{item.product}</td>
-                                    <td className="text-muted">{item.warehouse}</td>
-                                    <td>{item.quantity}</td>
-                                    <td className="text-red">{item.alert}</td>
-                                </tr>
+            {/* 2. Middle Section: Priority Alerts & Sales Insights */}
+            <div className="dashboard-mid-grid">
+
+                {/* Priority Alerts */}
+                <div className="card alert-card">
+                    <h3 className="card-title">
+                        <div className="flex-center-gap">
+                            <AlertCircle size={20} className="text-red" />
+                            Priority Alerts
+                        </div>
+                    </h3>
+
+                    <div className="alert-section">
+                        <h4 className="alert-subtitle text-red">Low Stock</h4>
+                        <ul className="alert-list">
+                            {lowStockItems.map((item, idx) => (
+                                <li key={idx} className="alert-item">
+                                    <span className="item-name">{item.name}</span>
+                                    <span className="item-badge danger">{item.qty} left</span>
+                                </li>
                             ))}
-                        </tbody>
-                    </table>
+                        </ul>
+                    </div>
+
+                    <div className="divider-h"></div>
+
+                    <div className="alert-section">
+                        <h4 className="alert-subtitle text-orange">Expiring Soon</h4>
+                        <ul className="alert-list">
+                            {expiringItems.map((item, idx) => (
+                                <li key={idx} className="alert-item">
+                                    <span className="item-name">{item.name}</span>
+                                    <span className="item-badge warning">{item.date}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
-                {/* Right Column: Charts */}
-                <div className="charts-column">
-                    {/* Monthly Sales */}
-                    <div className="card chart-card">
-                        <h3 className="card-title">Monthly Sales <span className="text-sm font-normal text-muted">Total Sales per Month</span></h3>
-                        <div className="chart-wrapper flex-center">
-                            <div className="pie-chart-container">
-                                <ResponsiveContainer width="100%" height={200}>
-                                    <PieChart>
-                                        <Pie
-                                            data={monthlySalesData}
-                                            innerRadius={60}
-                                            outerRadius={80}
-                                            paddingAngle={5}
-                                            dataKey="value"
-                                        >
-                                            {monthlySalesData.map((entry, index) => (
-                                                <Cell key={'cell-' + index} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        {/* Center Label for Pie Chart */}
-                                        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
-                                            <tspan x="50%" dy="-0.5em" fontSize="24" fontWeight="bold" fill="#333">45</tspan>
-                                        </text>
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                            <div className="chart-legend">
-                                {monthlySalesData.map((item, idx) => (
-                                    <div key={idx} className="legend-item">
-                                        <span className="dot" style={{ background: item.color }}></span>
-                                        <span>{item.name}</span>
-                                    </div>
-                                ))}
-                            </div>
+                {/* Sales Insights */}
+                <div className="card insight-card">
+                    <h3 className="card-title">
+                        <div className="flex-center-gap">
+                            <TrendingUp size={20} className="text-blue" />
+                            Sales Insights
+                        </div>
+                    </h3>
+
+                    <div className="insight-row">
+                        <div className="insight-box best-seller">
+                            <span className="insight-label">Top Product</span>
+                            <div className="insight-main">{topProduct.name}</div>
+                            <span className="insight-sub">{topProduct.sold} sold</span>
                         </div>
                     </div>
 
-                    {/* Stock Flow - Bar Chart */}
-                    <div className="card chart-card">
-                        <h3 className="card-title">This Weeks Sales & Purchases</h3>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <BarChart data={stockFlowData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                                <YAxis hide />
-                                <Tooltip />
-                                <Legend iconType="square" />
-                                <Bar dataKey="sales" fill="#4ade80" radius={[4, 4, 0, 0]} barSize={12} />
-                                <Bar dataKey="purchase" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={12} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                    <div className="insight-row">
+                        <div className="insight-box slow-mover">
+                            <span className="insight-label">Slow Item</span>
+                            <div className="insight-main">{slowProduct.name}</div>
+                            <span className="insight-sub">{slowProduct.sold} sold</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Recent Sales Table */}
-            <div className="card mt-6">
-                <h3 className="card-title">Recent Sales</h3>
-                <table className="custom-table">
-                    <thead>
-                        <tr>
-                            <th>REFERENCE</th>
-                            <th>CUSTOMER</th>
-                            <th>STATUS</th>
-                            <th>GRAND TOTAL</th>
-                            <th>PAID</th>
-                            <th>DUE</th>
-                            <th>PAYMENT STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {recentSales.map((item, index) => (
-                            <tr key={index}>
-                                <td className="text-link">{item.ref}</td>
-                                <td>{item.customer}</td>
-                                <td>
-                                    <span className={'badge-status ' + (item.status === 'Completed' ? 'success' : 'warning')}>
-                                        {item.status}
-                                    </span>
-                                </td>
-                                <td>{item.total}</td>
-                                <td>{item.paid}</td>
-                                <td>{item.due}</td>
-                                <td>
-                                    <span className={'badge-outline ' + (item.pStatus === 'Paid' ? 'success' : 'danger')}>
-                                        {item.pStatus}
-                                    </span>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* 3. Bottom Section: Stock Movement Chart */}
+            <div className="card chart-section">
+                <h3 className="card-title">Stock Movement (Last 7 Days)</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={stockFlowData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                        <YAxis axisLine={false} tickLine={false} />
+                        <Tooltip cursor={{ fill: '#f3f4f6' }} />
+                        <Legend iconType="circle" />
+                        <Bar dataKey="sales" name="Sales" fill="#10b981" radius={[4, 4, 0, 0]} barSize={30} />
+                        <Bar dataKey="purchase" name="Stock In" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={30} />
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );
@@ -212,174 +156,207 @@ const Dashboard = () => {
 export default Dashboard;
 
 const styles = `
+/* Dashboard New Layout Styles */
 .dashboard-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+.stats-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
 }
 
 .stat-card {
-  background: var(--bg-card);
-  border-radius: 20px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .stat-icon-wrapper {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
-  background: var(--bg-main); /* Adaptive bg */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
 }
 
 .stat-content {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .stat-label {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 4px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4px;
 }
 
 .stat-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
-.dashboard-content-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr; /* 60/40 split roughly */
-  gap: 24px;
-}
-
-.charts-column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.dashboard-mid-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
 }
 
 .card {
-  background: var(--bg-card);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--shadow-sm);
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
 }
 
 .card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
 }
 
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
+.flex-center-gap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.custom-table th {
-  text-align: left;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--table-header-color);
-  text-transform: uppercase;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--table-border-color);
+.text-red { color: #ef4444; }
+.text-orange { color: #f59e0b; }
+.text-blue { color: #3b82f6; }
+.text-green { color: #10b981; }
+
+/* Alert Section Styles */
+.alert-section {
+    margin-bottom: 24px;
 }
 
-.custom-table td {
-  padding: 16px 0;
-  font-size: 0.9rem;
-  color: var(--table-text-color);
-  border-bottom: 1px solid var(--table-border-color);
+.alert-section:last-child {
+    margin-bottom: 0;
 }
 
-.custom-table tr:last-child td {
-  border-bottom: none;
+.alert-subtitle {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
 }
 
-.text-muted { color: var(--text-muted) !important; }
-.text-red { color: #ef4444; font-weight: 600; }
-.text-link { color: #3b82f6; cursor: pointer; }
-
-.chart-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.alert-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.pie-chart-container {
-  flex: 1;
-  height: 200px;
-  position: relative;
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.95rem;
 }
 
-.chart-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-left: 20px;
+.alert-item:last-child {
+    border-bottom: none;
 }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.item-name {
+    color: var(--text-main);
+    font-weight: 500;
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
+.item-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-.badge-status {
-  padding: 4px 12px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
+.item-badge.danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
 }
-.badge-status.success { background: #dcfce7; color: #166534; }
-.badge-status.warning { background: #fee2e2; color: #991b1b; } /* Using red for incomplete based on img */
 
-.badge-outline {
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid;
+.item-badge.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
 }
-.badge-outline.success { border-color: #10b981; color: #10b981; }
-.badge-outline.danger { border-color: #ef4444; color: #ef4444; }
 
-.mt-6 { margin-top: 24px; }
+.divider-h {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 16px 0;
+}
+
+/* Insights Styles */
+.insight-row {
+    margin-bottom: 20px;
+}
+
+.insight-row:last-child {
+    margin-bottom: 0;
+}
+
+.insight-box {
+    background: var(--bg-main);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.insight-box.best-seller {
+    border-color: rgba(16, 185, 129, 0.2);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+}
+
+.insight-box.slow-mover {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+}
+
+.insight-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.insight-main {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.insight-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
 `;
 
 const styleSheet = document.createElement("style");
