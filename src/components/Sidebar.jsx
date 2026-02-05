@@ -9,7 +9,8 @@ import {
   FileText,
   Users,
   History,
-  Eye
+  Eye,
+  ArrowRightLeft
 } from 'lucide-react';
 import '../index.css';
 
@@ -18,7 +19,7 @@ const Sidebar = () => {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: List, label: 'Product', path: '/products' },
     { icon: Package, label: 'Inventory', path: '/inventory' },
-    { icon: FileText, label: 'Stock Flow', path: '/stock-flow' },
+    { icon: ArrowRightLeft, label: 'Stock Flow', path: '/stock-flow' },
     { icon: Bell, label: 'Alerts', path: '/alerts' },
     { icon: BarChart2, label: 'Reports', path: '/reports' },
     { icon: Users, label: 'Accounts', path: '/accounts' },
