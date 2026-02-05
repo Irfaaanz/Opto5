@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import DashboardLayout from './layout/DashboardLayout';
 import Dashboard from './pages/Dashboard';
+import Products from './pages/Products';
+import Profile from './pages/Profile';
 
 // Dashboard component is imported above
 
@@ -15,7 +17,8 @@ function App() {
 
                 <Route element={<DashboardLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/products" element={<Dashboard />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/profile" element={<Profile />} />
                     <Route path="/inventory" element={<Dashboard />} />
                 </Route>
             </Routes>

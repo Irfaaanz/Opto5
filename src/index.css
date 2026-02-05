@@ -36,7 +36,79 @@
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.5);
     --glass-blur: 12px;
+
+    /* Table Variables */
+    --table-header-color: #64748b;
+    --table-text-color: #334155;
+    --table-border-color: #e2e8f0;
+
+    /* Component Specifics - Light Mode */
+    --input-bg: rgba(255, 255, 255, 0.5);
+    --input-border: transparent;
+    --panel-bg: #ffffff;
 }
+
+[data-theme='dark'] {
+    /* Backgrounds */
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-sidebar: #020617;
+    --panel-bg: #1e293b;
+
+    /* Text */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-light: #f8fafc;
+
+    /* Effects */
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+
+    /* Input backgrounds */
+    --input-bg: #334155;
+    --input-border: #475569;
+
+    /* Component Specifics - Dark Mode */
+    --table-header-color: #94a3b8;
+    --table-text-color: #cbd5e1;
+    --table-border-color: #334155;
+}
+
+/* Ensure inputs respond to dark mode */
+input,
+textarea {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--input-border);
+}
+
+/* Specific component overrides if necessary */
+[data-theme='dark'] .sidebar-nav .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Table Specifics Global */
+th {
+    color: var(--table-header-color) !important;
+    border-bottom-color: var(--table-border-color) !important;
+}
+
+td {
+    color: var(--table-text-color) !important;
+    border-bottom-color: var(--table-border-color) !important;
+}
+
+/* Settings Panel Transition */
+.settings-panel {
+    background-color: var(--panel-bg);
+    color: var(--text-main);
+}
+
 
 * {
     box-sizing: border-box;

@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
-import { Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
+import { Mail, Lock, LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
 const Login = () => {
     const [isAdmin, setIsAdmin] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        setError('');
+
+        // Mock Backend Logic
+        const adminEmail = 'optoadmin@gmail.com';
+        const staffEmail = 'optostaff@gmail.com';
+        const validPass = 'octo1234'; // Same password for both for now
+
+        if (isAdmin) {
+            if (email === adminEmail && password === validPass) {
+                // Success Admin
+                console.log('Login Success: Admin');
+                navigate('/dashboard');
+            } else {
+                setError('Invalid Admin credentials');
+            }
+        } else {
+            if (email === staffEmail && password === validPass) {
+                // Success Staff
+                console.log('Login Success: Staff');
+                navigate('/dashboard');
+            } else {
+                setError('Invalid Staff credentials');
+            }
+        }
+    };
 
     return (
         <div className="login-container">
@@ -35,30 +68,50 @@ const Login = () => {
                         <h2>Sign in as {isAdmin ? 'admin' : 'staff'}</h2>
                     </div>
 
-                    <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+                    <form className="login-form" onSubmit={handleLogin}>
                         <div className="input-group">
                             <Mail className="input-icon" size={20} />
-                            <input type="email" placeholder="Email" className="input-field" />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="input-field"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
                         </div>
 
                         <div className="input-group">
                             <Lock className="input-icon" size={20} />
-                            <input type="password" placeholder="Password" className="input-field" />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                className="input-field"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
                         </div>
+
+                        {error && <div className="error-msg">{error}</div>}
 
                         <div className="form-footer">
                             <a href="#" className="forgot-pass">Forgot password?</a>
                         </div>
 
-                        <button className="btn-primary">
+                        <button type="submit" className="btn-primary">
                             Sign in
                         </button>
 
                         <div className="role-switch">
                             <p>Are you a {isAdmin ? 'staff' : 'admin'}?</p>
                             <button
+                                type="button"
                                 className="btn-secondary"
-                                onClick={() => setIsAdmin(!isAdmin)}
+                                onClick={() => {
+                                    setIsAdmin(!isAdmin);
+                                    setError(''); // Clear error on switch
+                                }}
                             >
                                 Sign in as {isAdmin ? 'staff' : 'admin'}
                             </button>
@@ -253,6 +306,16 @@ const styles = `
   margin-bottom: 10px;
   font-size: 0.9rem;
   color: #1e1b4b;
+}
+
+.error-msg {
+  color: #b91c1c;
+  background: rgba(254, 202, 202, 0.7);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 `;
 

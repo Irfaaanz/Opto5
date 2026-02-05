@@ -1,53 +1,53 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-    LayoutDashboard,
-    List,
-    Package,
-    BarChart2,
-    Bell,
-    FileText,
-    Users,
-    History,
-    Eye
+  LayoutDashboard,
+  List,
+  Package,
+  BarChart2,
+  Bell,
+  FileText,
+  Users,
+  History,
+  Eye
 } from 'lucide-react';
 import '../index.css';
 
 const Sidebar = () => {
-    const menuItems = [
-        { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-        { icon: List, label: 'Product', path: '/products' },
-        { icon: Package, label: 'Inventory', path: '/inventory' },
-        { icon: FileText, label: 'Stock Flow', path: '/stock-flow' },
-        { icon: Bell, label: 'Alerts', path: '/alerts' },
-        { icon: BarChart2, label: 'Reports', path: '/reports' },
-        { icon: Users, label: 'Accounts', path: '/accounts' },
-        { icon: History, label: 'Activity Log', path: '/activity' },
-    ];
+  const menuItems = [
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+    { icon: List, label: 'Product', path: '/products' },
+    { icon: Package, label: 'Inventory', path: '/inventory' },
+    { icon: FileText, label: 'Stock Flow', path: '/stock-flow' },
+    { icon: Bell, label: 'Alerts', path: '/alerts' },
+    { icon: BarChart2, label: 'Reports', path: '/reports' },
+    { icon: Users, label: 'Accounts', path: '/accounts' },
+    { icon: History, label: 'Activity Log', path: '/activity' },
+  ];
 
-    return (
-        <div className="sidebar">
-            <div className="sidebar-brand">
-                <div className="logo-icon">
-                    <Eye size={28} color="#3b82f6" />
-                </div>
-                <span className="brand-name">OptoFive</span>
-            </div>
-
-            <nav className="sidebar-nav">
-                {menuItems.map((item, index) => (
-                    <NavLink
-                        key={index}
-                        to={item.path}
-                        className={({ isActive }) => 'nav-item ' + (isActive ? 'active' : '')}
-                    >
-                        <item.icon className="nav-icon" size={24} />
-                        <span className="nav-label">{item.label}</span>
-                    </NavLink>
-                ))}
-            </nav>
+  return (
+    <div className="sidebar">
+      <div className="sidebar-brand">
+        <div className="logo-icon">
+          <Eye size={28} color="#3b82f6" />
         </div>
-    );
+        <span className="brand-name">OptoFive</span>
+      </div>
+
+      <nav className="sidebar-nav">
+        {menuItems.map((item, index) => (
+          <NavLink
+            key={index}
+            to={item.path}
+            className={({ isActive }) => 'nav-item ' + (isActive ? 'active' : '')}
+          >
+            <item.icon className="nav-icon" size={24} />
+            <span className="nav-label">{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
+    </div>
+  );
 };
 
 export default Sidebar;
@@ -64,6 +64,19 @@ const styles = `
   left: 0;
   top: 0;
   z-index: 50;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Scrollbar styling for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
 }
 
 .sidebar-brand {
@@ -72,6 +85,7 @@ const styles = `
   align-items: center;
   padding: 0 24px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .logo-icon {

@@ -225,7 +225,7 @@ const styles = `
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px;
   display: flex;
@@ -243,7 +243,7 @@ const styles = `
   width: 60px;
   height: 60px;
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--bg-main); /* Adaptive bg */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +256,7 @@ const styles = `
 }
 
 .stat-label {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 4px;
@@ -265,7 +265,7 @@ const styles = `
 .stat-value {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-main);
 }
 
 .dashboard-content-grid {
@@ -281,7 +281,7 @@ const styles = `
 }
 
 .card {
-  background: white;
+  background: var(--bg-card);
   border-radius: 20px;
   padding: 24px;
   box-shadow: var(--shadow-sm);
@@ -290,7 +290,7 @@ const styles = `
 .card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-main);
   margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
@@ -306,24 +306,24 @@ const styles = `
   text-align: left;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--table-header-color);
   text-transform: uppercase;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--table-border-color);
 }
 
 .custom-table td {
   padding: 16px 0;
   font-size: 0.9rem;
-  color: #334155;
-  border-bottom: 1px solid #f1f5f9;
+  color: var(--table-text-color);
+  border-bottom: 1px solid var(--table-border-color);
 }
 
 .custom-table tr:last-child td {
   border-bottom: none;
 }
 
-.text-muted { color: #94a3b8 !important; }
+.text-muted { color: var(--text-muted) !important; }
 .text-red { color: #ef4444; font-weight: 600; }
 .text-link { color: #3b82f6; cursor: pointer; }
 
@@ -344,7 +344,7 @@ const styles = `
   flex-direction: column;
   gap: 8px;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-left: 20px;
 }
 
