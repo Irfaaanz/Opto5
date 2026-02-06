@@ -178,3 +178,34 @@ input {
     font-family: inherit;
     outline: none;
 }
+
+/* Global Input Styles */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background-color: var(--bg-main);
+    /* Keep grey to contrast with white card */
+    color: var(--text-main);
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.input-field:focus {
+    background-color: var(--bg-main);
+    /* Do NOT turn white, stay grey */
+    border-color: var(--primary);
+    color: var(--text-main);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+}
+
+/* Fix for Chrome/Safari Autofill forcing white background */
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus,
+.input-field:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--bg-main) inset !important;
+    -webkit-text-fill-color: var(--text-main) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}

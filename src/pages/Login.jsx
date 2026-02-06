@@ -250,12 +250,14 @@ const styles = `
   border: 2px solid transparent;
   background: rgba(255, 255, 255, 0.5);
   font-size: 1rem;
+  color: #1e293b; /* Force Dark Text */
   transition: all 0.3s ease;
 }
 
 .input-field:focus {
   background: #ffffff;
   box-shadow: var(--shadow-md);
+  color: #1e293b; /* Ensure text remains dark on focus */
 }
 
 .form-footer {
